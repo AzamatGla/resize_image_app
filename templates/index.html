@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid px-1 px-sm-2 px-md-3 px-lg-5 mb-5">
+        {% if image_list and image_list.count > 0 %}
+            <div class="row m-5">
+                <div class="col-12 float-right">
+                    <a class="btn btn-success rounded-pill" href="{% url 'upload' %}">UPLOAD IMAGE</a>
+                </div>
+                <div class="col-12">
+                    <table class="table table-striped table-responsive mt-2">
+                        <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>WIDTH</th>
+                            <th></th>
+                            <th>HEIGHT</th>
+                            <th></th>
+                            <th>MAX SIZE</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for image in image_list %}
+                            <tr>
+                                {% if image.file %}
+                                    <td class="image-url text-info"><p class="text-truncate" style="cursor: pointer" onclick="load_image(this, '{% url 'image' image.id %}')">{{ image.filename }}</p>
+                                    </td>
+                                {% endif %}
+                                <td><input style="width: 8rem" type="text" class="width form-control"></td>
+                                <td><p style="width: 2rem" class="font-weight-bold">px</td>
+                                <td><input style="width: 8rem" type="text" class="height form-control"></td>
+                                <td><p style="width: 2rem" class="font-weight-bold">px</td>
+                                <td><input style="width: 8rem" type="text" class="max-size form-control"></td>
+                                <td><p style="width: 2rem" class="font-weight-bold">kb</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% else %}
+            <div class="row mt-5">
+                <div class="col-12 text-center h1 mt-5 font-weight-bold">NO IMAGES</div>
+                <div class="col-12 text-center mt-4">
+                    <a href="{% url 'upload' %}" class="btn btn-success px-5">UPLOAD IMAGE</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function load_image(el, url) {
+            let image_url = url;
+            let params = {};
+            params.width = $(el).parent().parent().find('.width').val();
+            params.height = $(el).parent().parent().find('.height').val();
+            params.max_size = $(el).parent().parent().find('.max-size').val();
+            image_url += '?' + jQuery.param(params);
+            let win = window.open(image_url, '_blank');
+            if (win) {
+                win.focus();
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% load custom_tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="row my-5">
+            <div class="col-12">
+                <a class="btn btn-info rounded-pill px-5" href="{% url 'index' %}">Back</a>
+            </div>
+        </div>
+        <form id="image-upload" method="post" action="{% url 'upload' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row my-5">
+                <div class="col-md-6">
+                    <label class="w-100">ENTER URL
+                        {{ form.link|class:"form-control" }}
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <label class="w-100">SELECT FILE
+                        {{ form.file|class:"form-control" }}
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p id="error-message" class="text-danger mb-4 h4"></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success rounded-pill px-5">SUBMIT</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('#image-upload').submit(function (event) {
+            if ($('#id_link').val() && $('#id_file').val()) {
+                event.preventDefault();
+                $('#id_link').addClass('is-invalid');
+                $('#id_file').addClass('is-invalid');
+                $('#error-message').text('Only one field is required!!!');
+            }
+        });
+    </script>
+{% endblock %}
