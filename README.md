@@ -14,7 +14,7 @@
 
 - проведите необходимые миграции ```python manage.py migrate```
 
-- наберите ```python manage.py makemigrations```
+- наберите ```python manage.py makemigrations app```
 - повторите ```python manage.py migrate```
 
 
